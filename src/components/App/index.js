@@ -11,7 +11,9 @@ export default class App extends React.Component {
   }
 
   renderCreatePostPage() {
-    return <Create />;
+    return (
+      <Create />
+    );
   }
 
   render(){
