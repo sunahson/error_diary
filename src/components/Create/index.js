@@ -6,7 +6,7 @@ export default class Create extends React.Component {
     super(props);
 
     this.state = {
-      inputFieldCount: 1,
+      inputFieldCount: 0,
       beforeInput: [],
       afterInput: []
     };
