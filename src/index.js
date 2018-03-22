@@ -7,6 +7,8 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 import { firebaseReducer, reactReduxFirebase } from 'react-redux-firebase';
 import { firestoreReducer, reduxFirestore } from 'redux-firestore';
+import { Router } from 'react-router';
+import createBrowserHistory from 'history/createBrowserHistory';
 
 const config = {
   userProfile: 'users',
@@ -38,8 +40,12 @@ const reducer = combineReducers({
 const initialState = {};
 const store = createStoreWithFirebase(reducer, initialState);
 
+const history = createBrowserHistory();
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router history={history}>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById('root'));
