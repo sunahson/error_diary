@@ -112,12 +112,10 @@ export default class App extends React.Component {
           <p className="header-subtitle">버그 탈출을 위한 다이어리</p>
         </div>
         <Switch>
-          <Route exact path="/" render={this.renderMainPage.bind(this)}/>
+          <Route exact path="/" render={this.renderMainPage.bind(this)} />
           <Route path="/create" render={this.renderCreatePostPage.bind(this)} />
         </Switch>
       </div>
     );
   }
 }
-
-

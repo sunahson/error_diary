@@ -23,12 +23,12 @@ export default class Create extends React.Component {
 
     for (let i = this.state.inputFieldCount; i < this.state.inputFieldCount + 1; i++) {
       newBeforeInput.push(
-        <div key={i} index={i}>
-          <label htmlFor="file_name"></label>
-          <input type="text" id="file_name" placeholder={i} onChange={(e) => this.props.changeValue('beforeData0', e.target.value, i)} />
-          <label htmlFor="file_content"></label>
-          <input type="text" id="file_content" onChange={(e) => this.props.changeValue('beforeData1', e.target.value, i)} />
-          <button onClick={() => {
+        <div key={i} index={i} className="before-content">
+          <label htmlFor="file_name" className="label"></label>
+          <input type="text" id="file_name" className="input" placeholder="파일 이름을 입력하세요." onChange={(e) => this.props.changeValue('beforeData0', e.target.value, i)} />
+          <label htmlFor="file_content" className="label"></label>
+          <textarea id="file_content" className="text-content" onChange={(e) => this.props.changeValue('beforeData1', e.target.value, i)}></textarea>
+          <button className="button remove" onClick={() => {
             this.removeInputField(i);
             this.props.resetValue(i);
           }}>삭제</button>
@@ -36,11 +36,11 @@ export default class Create extends React.Component {
       );
 
       newAfterInput.push(
-        <div key={i} index={i}>
-          <label htmlFor="file_name"></label>
-          <input type="text" id="file_name" placeholder={i} onChange={(e) => this.props.changeValue('afterData0', e.target.value, i)} />
-          <label htmlFor="file_content"></label>
-          <input type="text" id="file_content" onChange={(e) => this.props.changeValue('afterData1', e.target.value, i)} />
+        <div key={i} index={i} className="after-content">
+          <label htmlFor="file_name" className="label"></label>
+          <input type="text" id="file_name" className="input" placeholder="파일 이름을 입력하세요." onChange={(e) => this.props.changeValue('afterData0', e.target.value, i)} />
+          <label htmlFor="file_content" className="label"></label>
+          <textarea id="file_content" className="text-content" onChange={(e) => this.props.changeValue('afterData1', e.target.value, i)}></textarea>
         </div>
       );
     }
@@ -70,42 +70,54 @@ export default class Create extends React.Component {
 
   render(){
     return (
-      <div>
-        <label htmlFor="title">제목</label>
-        <input type="text" id="title" onChange={(e) => this.props.changeValue('title', e.target.value)} />
-        <div>
-          <p>1. 발생한 에러</p>
-          <div>
-            <label htmlFor="error_content">1) 에러 내용</label>
-            <input type="text" id="error_content" onChange={(e) => this.props.changeValue('content0', e.target.value)} />
-            <label htmlFor="callstack">2) callstack</label>
-            <input type="text" id="callstack" onChange={(e) => this.props.changeValue('content1', e.target.value)} />
+      <div className="row post-form">
+        <div className="offset-1 col-10">
+          <div className="row">
+            <div className="col-2 title-label-container">
+              <label htmlFor="title" className="label">제목</label>
+            </div>
+            <div className="col-10 title-input-container">
+              <input type="text" id="title" className="input" onChange={(e) => this.props.changeValue('title', e.target.value)} />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 error-container">
+              <p className="title">1. 발생한 에러</p>
+              <div className="error-content">
+                <label htmlFor="error_content" className="label">1) 에러 내용</label>
+                <textarea id="error_content" className="text-content" onChange={(e) => this.props.changeValue('content0', e.target.value)}></textarea>
+                <label htmlFor="callstack" className="label">2) callstack</label>
+                <textarea id="callstack" className="text-content" onChange={(e) => this.props.changeValue('content1', e.target.value)}></textarea>
+              </div>
+            </div>
+            <div className="col-12 before-container">
+              <p className="title">2. 변경 전 코드</p>
+              <div className="before-contents">
+                <button className="button add" onClick={() => this.addInputField()}>추가</button>
+                {this.state.beforeInput}
+              </div>
+            </div>
+            <div className="col-12 solution-container">
+              <p className="title">3. 해결 방법</p>
+              <div className="solution-content">
+                <label htmlFor="solution" className="label"></label>
+                <textarea id="solution" className="text-content" onChange={(e) => this.props.changeValue('solution', e.target.value)}></textarea>
+              </div>
+            </div>
+            <div className="col-12 after-container">
+              <p className="title">4. 변경 후 코드</p>
+              <div className="after-contents">
+                {this.state.afterInput}
+              </div>
+            </div>
+            <div className="col-12 button-container">
+              <button className="button default" onClick={() => this.props.saveData()}>저장하기</button>
+              <Link to="/" className="link">
+                <button className="button default">취소하기</button>
+              </Link>
+            </div>
           </div>
         </div>
-        <div>
-          <p>2. 변경 전 코드</p>
-          <div>
-            <button onClick={() => this.addInputField()}>추가</button>
-            {this.state.beforeInput}
-          </div>
-        </div>
-        <div>
-          <p>3. 해결 방법</p>
-          <div>
-            <label htmlFor="solution"></label>
-            <input type="text" id="solution" onChange={(e) => this.props.changeValue('solution', e.target.value)} />
-          </div>
-        </div>
-        <div>
-          <p>4. 변경 후 코드</p>
-          <div>
-            {this.state.afterInput}
-          </div>
-        </div>
-        <button onClick={() => this.props.saveData()}>저장하기</button>
-        <Link to="/">
-          <button>취소하기</button>
-        </Link>
       </div>
     );
   }

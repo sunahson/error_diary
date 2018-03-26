@@ -28,9 +28,11 @@ export default class Main extends React.Component {
           </ul>
         </div>
         <div className="row">
-          <Link to="/create" className="link">
-            <button className="offset-9 col-1 button default">글쓰기</button>
-          </Link>
+          <button className="offset-9 col-1 button default">
+            <Link to="/create" className="link">
+              <span>글쓰기</span>
+            </Link>
+          </button>
         </div>
         <div className="row">
           <p className="offset-2 col-8 footer-page">1 | 2 | 3 | 4 | 5 | ... | 15</p>
