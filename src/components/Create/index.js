@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.less';
+import { Link } from 'react-router-dom';
 
 export default class Create extends React.Component {
   constructor(props) {
@@ -24,19 +25,22 @@ export default class Create extends React.Component {
       newBeforeInput.push(
         <div key={i} index={i}>
           <label htmlFor="file_name"></label>
-          <input type="text" id="file_name" placeholder={i} />
+          <input type="text" id="file_name" placeholder={i} onChange={(e) => this.props.changeValue('beforeData0', e.target.value, i)} />
           <label htmlFor="file_content"></label>
-          <input type="text" id="file_content" />
-          <button onClick={() => this.removeInputField(i)}>삭제</button>
+          <input type="text" id="file_content" onChange={(e) => this.props.changeValue('beforeData1', e.target.value, i)} />
+          <button onClick={() => {
+            this.removeInputField(i);
+            this.props.resetValue(i);
+          }}>삭제</button>
         </div>
       );
 
       newAfterInput.push(
         <div key={i} index={i}>
           <label htmlFor="file_name"></label>
-          <input type="text" id="file_name" placeholder={i} />
+          <input type="text" id="file_name" placeholder={i} onChange={(e) => this.props.changeValue('afterData0', e.target.value, i)} />
           <label htmlFor="file_content"></label>
-          <input type="text" id="file_content" />
+          <input type="text" id="file_content" onChange={(e) => this.props.changeValue('afterData1', e.target.value, i)} />
         </div>
       );
     }
@@ -68,26 +72,20 @@ export default class Create extends React.Component {
     return (
       <div>
         <label htmlFor="title">제목</label>
-        <input type="text" id="title" />
+        <input type="text" id="title" onChange={(e) => this.props.changeValue('title', e.target.value)} />
         <div>
           <p>1. 발생한 에러</p>
           <div>
             <label htmlFor="error_content">1) 에러 내용</label>
-            <input type="text" id="error_content" />
+            <input type="text" id="error_content" onChange={(e) => this.props.changeValue('content0', e.target.value)} />
             <label htmlFor="callstack">2) callstack</label>
-            <input type="text" id="callstack" />
+            <input type="text" id="callstack" onChange={(e) => this.props.changeValue('content1', e.target.value)} />
           </div>
         </div>
         <div>
           <p>2. 변경 전 코드</p>
           <div>
             <button onClick={() => this.addInputField()}>추가</button>
-            <div>
-              <label htmlFor="file_name"></label>
-              <input type="text" id="file_name" placeholder="파일 이름을 적으세요" />
-              <label htmlFor="file_content"></label>
-              <input type="text" id="file_content" />
-            </div>
             {this.state.beforeInput}
           </div>
         </div>
@@ -95,23 +93,19 @@ export default class Create extends React.Component {
           <p>3. 해결 방법</p>
           <div>
             <label htmlFor="solution"></label>
-            <input type="text" id="solution" />
+            <input type="text" id="solution" onChange={(e) => this.props.changeValue('solution', e.target.value)} />
           </div>
         </div>
         <div>
           <p>4. 변경 후 코드</p>
           <div>
-            <div>
-              <label htmlFor="file_name"></label>
-              <input type="text" id="file_name" placeholder="파일 이름을 적으세요" />
-              <label htmlFor="file_content"></label>
-              <input type="text" id="file_content" />
-            </div>
             {this.state.afterInput}
           </div>
         </div>
-        <button>저장하기</button>
-        <button>취소하기</button>
+        <button onClick={() => this.props.saveData()}>저장하기</button>
+        <Link to="/">
+          <button>취소하기</button>
+        </Link>
       </div>
     );
   }

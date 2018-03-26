@@ -15,15 +15,13 @@ export default class Main extends React.Component {
             <li className="postList-content">
               {
                 this.props.postList &&
-                Object.keys(this.props.postList[0]).map((data, index) => {
-                  if (this.props.postList[0][data].date) {
-                    return (
-                      <div className="row post" key={index}>
-                        <p className="col-8 post-title">{this.props.postList[0][data].title}</p>
-                        <p className="col-4 post-date">{this.props.postList[0][data].date}</p>
-                      </div>
-                    );
-                  }
+                Object.keys(this.props.postList).map((data, index) => {
+                  return (
+                    <div className="row post" key={index}>
+                      <p className="col-8 post-title">{this.props.postList[data].title}</p>
+                      <p className="col-4 post-date">{this.props.postList[data].date}</p>
+                    </div>
+                  );
                 })
               }
             </li>

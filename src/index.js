@@ -6,14 +6,12 @@ import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import { firebaseReducer, reactReduxFirebase } from 'react-redux-firebase';
-import { firestoreReducer, reduxFirestore } from 'redux-firestore';
 import { Router } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 const config = {
   userProfile: 'users',
-  enableLogging: true,
-  useFirestoreForProfile: true
+  enableLogging: false,
 };
 
 const firebaseConfig = {
@@ -28,13 +26,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebase, config),
-  reduxFirestore(firebase)
+  reactReduxFirebase(firebase, config)
 )(createStore);
 
 const reducer = combineReducers({
-  firebase: firebaseReducer,
-  firestore: firestoreReducer
+  firebase: firebaseReducer
 });
 
 const initialState = {};

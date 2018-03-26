@@ -2,11 +2,15 @@ import react from 'react';
 import App from '../components/App/';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 
 export default compose(
-  firestoreConnect([{ collection: 'postList'}]),
-  connect((state, props) => ({
-    postList: state.firestore.ordered.postList
+  firebaseConnect((props) => {
+    return [
+      'postList'
+    ]
+  }),
+  connect((state) => ({
+    postList: state.firebase.data.postList
   }))
 )(App);
