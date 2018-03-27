@@ -23,7 +23,7 @@ export default class Create extends React.Component {
 
     for (let i = this.state.inputFieldCount; i < this.state.inputFieldCount + 1; i++) {
       newBeforeInput.push(
-        <div key={i} index={i} className="before-content">
+        <div key={i} className="before-content">
           <label htmlFor="file_name" className="label"></label>
           <input type="text" id="file_name" className="input" placeholder="파일 이름을 입력하세요." onChange={(e) => this.props.changeValue('beforeData0', e.target.value, i)} />
           <label htmlFor="file_content" className="label"></label>
@@ -36,7 +36,7 @@ export default class Create extends React.Component {
       );
 
       newAfterInput.push(
-        <div key={i} index={i} className="after-content">
+        <div key={i} className="after-content">
           <label htmlFor="file_name" className="label"></label>
           <input type="text" id="file_name" className="input" placeholder="파일 이름을 입력하세요." onChange={(e) => this.props.changeValue('afterData0', e.target.value, i)} />
           <label htmlFor="file_content" className="label"></label>
@@ -111,7 +111,9 @@ export default class Create extends React.Component {
               </div>
             </div>
             <div className="col-12 button-container">
-              <button className="button default" onClick={() => this.props.saveData()}>저장하기</button>
+              <Link to={`/post/${this.props.postId}`} className="link">
+                <button className="button default" onClick={() => this.props.saveData()}>저장하기</button>
+              </Link>
               <Link to="/" className="link">
                 <button className="button default">취소하기</button>
               </Link>

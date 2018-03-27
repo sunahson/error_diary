@@ -3,14 +3,17 @@ import './style.less';
 import 'bootstrap/dist/css/bootstrap.css';
 import Main from '../Main/';
 import Create from '../Create/';
+import Post from '../Post/';
 import { Switch, Route } from 'react-router';
 import { formattingDate } from '../../utils.js';
+import 'lodash';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      key: this.props.firebase.database().ref().push().key,
       title: '',
       content: [],
       beforeData: [],
@@ -25,7 +28,16 @@ export default class App extends React.Component {
 
   renderCreatePostPage() {
     return (
-      <Create changeValue={this.changeValue.bind(this)} resetValue={this.resetValue.bind(this)} saveData={this.onSaveData.bind(this)} />
+      <Create postId={this.state.key} changeValue={this.changeValue.bind(this)} resetValue={this.resetValue.bind(this)} saveData={this.onSaveData.bind(this)} />
+    );
+  }
+
+  renderPostViewPage() {
+    const key = this.props.location.pathname.split("/")[2];
+    const data = _.find(this.props.postList, { 'key': key });
+
+    return (
+      <Post data={data} />
     );
   }
 
@@ -95,6 +107,7 @@ export default class App extends React.Component {
     newAfterData = this.state.afterData.slice().filter((data) => { return data !== null });
 
     this.props.firebase.push('postList', {
+      key: this.state.key,
       title: this.state.title,
       content: this.state.content,
       beforeData: newBeforeData,
@@ -114,6 +127,7 @@ export default class App extends React.Component {
         <Switch>
           <Route exact path="/" render={this.renderMainPage.bind(this)} />
           <Route path="/create" render={this.renderCreatePostPage.bind(this)} />
+          <Route path="/post/:postId" render={this.renderPostViewPage.bind(this)} />
         </Switch>
       </div>
     );
