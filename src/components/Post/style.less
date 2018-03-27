@@ -1,0 +1,157 @@
+.post-container {
+  padding: 20px 40px;
+
+  .post {
+    padding: 60px 80px;
+    box-shadow: 0 2px 4px 0.3px rgba(0, 0, 0, 0.5);
+    border: solid 1px #979797;
+
+    .title {
+      font-size: 28px;
+      color: #d0021b;
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    .hr {
+      margin-bottom: 0;
+      border: solid 0.5px #979797;
+    }
+
+    .date {
+      margin-bottom: 0;
+      font-size: 14px;
+      font-style: italic;
+      text-align: right;
+      color: rgba(0, 0, 0, 0.71);
+    }
+
+    .error-container {
+      margin-top: 60px;
+
+      .error-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .error-content {
+        .error-content-container {
+          .sub-title {
+            margin-bottom: 0;
+          }
+
+          .sub-content {
+            margin-left: 10px;
+
+            p {
+              margin-bottom: 0;
+            }
+          }
+        }
+
+        .callstack-container {
+          .sub-title {
+            margin: 10px 0 0 0;
+          }
+
+          .sub-content {
+            margin-left: 10px;
+
+            p {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .before-container {
+      margin-top: 60px;
+
+      .before-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .before-contents {
+        .before-content {
+          .sub-title {
+            margin-bottom: 3px;
+            font-style: italic;
+          }
+
+          .sub-content {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .solution-container {
+      margin-top: 60px;
+
+      .solution-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .solution-content {
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .after-container {
+      margin-top: 60px;
+
+      .after-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .after-contents {
+        .after-content {
+          .sub-title {
+            margin-bottom: 3px;
+            font-style: italic;
+          }
+
+          .sub-content {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .button-container {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      .button.default {
+        display: block;
+        padding: 5px 25px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        border: solid 1px #979797;
+        cursor: pointer;
+      }
+
+      .button-sub-container {
+        display: flex;
+        flex-flow: row nowrap;
+
+        .link {
+          text-decoration: none;
+        }
+
+        .button.default:last-child {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
