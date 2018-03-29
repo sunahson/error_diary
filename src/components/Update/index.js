@@ -1,8 +1,7 @@
 import React from 'react';
-import './style.less';
 import { Link } from 'react-router-dom';
 
-export default class Create extends React.Component {
+export default class Update extends React.Component {
   constructor(props) {
     super(props);
 
