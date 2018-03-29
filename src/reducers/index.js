@@ -1,13 +1,17 @@
 import { combineReducers } from 'redux';
-import { CHANGE_VALUE, REMOVE_VALUE, RESET_VALUE, SEARCH } from '../constants/ActionTypes';
+import { CHANGE_VALUE, REMOVE_VALUE, RESET_VALUE, SHOW_ERROR, REMOVE_ERROR } from '../constants/ActionTypes';
 
 const initialState = {
   postData: {
     title: '',
     content: [],
     beforeData: [],
-    afterData: [],
-    solution: ''
+    solution: '',
+    afterData: []
+  },
+  errorData: {
+    error: false,
+    message: ''
   }
 };
 
@@ -38,6 +42,10 @@ const postData = (state = initialState.postData, action) => {
         return Object.assign({}, state, {
           beforeData: newBeforeData
         });
+      } else if (action.payload === 'solution') {
+        return Object.assign({}, state, {
+          solution: action.value
+        });
       } else if (action.payload.includes('afterData')) {
         let newAfterData = state.afterData.slice();
 
@@ -49,10 +57,6 @@ const postData = (state = initialState.postData, action) => {
 
         return Object.assign({}, state, {
           afterData: newAfterData
-        });
-      } else if (action.payload === 'solution') {
-        return Object.assign({}, state, {
-          solution: action.value
         });
       }
     case REMOVE_VALUE:
@@ -79,6 +83,56 @@ const postData = (state = initialState.postData, action) => {
   }
 };
 
+const errorData = (state = initialState.errorData, action) => {
+  switch (action.type) {
+    case SHOW_ERROR:
+    if (action.payload === 'title') {
+      return Object.assign({}, state, {
+        error: 'title',
+        message: ''
+      });
+    } else if (action.payload === 'contentTitle') {
+      return Object.assign({}, state, {
+        error: 'contentTitle',
+        message: ''
+      });
+    } else if (action.payload === 'contentContent') {
+      return Object.assign({}, state, {
+        error: 'contentContent',
+        message: ''
+      });
+    } else if (action.payload === 'beforeDataZero') {
+      return Object.assign({}, state, {
+        error: 'beforeDataZero',
+        message: '추가 버튼을 눌러 코드를 작성하세요.'
+      });
+    } else if (action.payload === 'beforeData') {
+      return Object.assign({}, state, {
+        error: 'beforeData',
+        message: '코드를 입력해주세요.'
+      });
+    } else if (action.payload === 'solution') {
+      return Object.assign({}, state, {
+        error: 'solution',
+        message: ''
+      });
+    } else if (action.payload === 'afterData') {
+      return Object.assign({}, state, {
+        error: 'afterData',
+        message: '코드를 입력해주세요.'
+      });
+    }
+    case REMOVE_ERROR:
+      return Object.assign({}, state, {
+        error: '',
+        message: ''
+      });
+    default:
+      return Object.assign({}, state);
+  }
+};
+
 export default {
-  postData
+  postData,
+  errorData
 };

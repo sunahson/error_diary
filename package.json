@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "license" : "SEE LICENSE IN error_diary",
   "scripts": {
     "start": "webpack-dev-server --hot --host 0.0.0.0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
   },
   "author": "Dasol Seo",
   "dependencies": {
     "bootstrap": "^4.0.0",
-    "crypto-random-string": "^1.0.0",
     "firebase": "^4.11.0",
     "highlight.js": "^9.12.0",
     "lodash": "^4.17.5",
@@ -22,8 +23,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
-    "redux": "^3.7.2",
-    "redux-firestore": "^0.3.2"
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -35,7 +35,6 @@
     "css-loader": "^0.28.11",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "react-svg-loader": "^2.1.0",
     "style-loader": "^0.20.3",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"

@@ -15,6 +15,10 @@ export default class Create extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.onRemoveErrorSign();
+  }
+
   addInputField() {
     let newBeforeInput = this.state.beforeInput.slice();
     let newAfterInput = this.state.afterInput.slice();
@@ -79,7 +83,7 @@ export default class Create extends React.Component {
               <label htmlFor="title" className="label">제목</label>
             </div>
             <div className="col-10 title-input-container">
-              <input type="text" id="title" className="input" onChange={(e) => this.props.onChangeValue('title', e.target.value)} />
+              <input type="text" id="title" className={`input ${this.props.errorData.error === 'title'? "error" : ""}`} onChange={(e) => this.props.onChangeValue('title', e.target.value)} />
             </div>
           </div>
           <div className="row">
@@ -87,15 +91,23 @@ export default class Create extends React.Component {
               <p className="title">1. 발생한 에러</p>
               <div className="error-content">
                 <label htmlFor="error_content" className="label">1) 에러 내용</label>
-                <textarea id="error_content" className="text-content" onChange={(e) => this.props.onChangeValue('contentTitle', e.target.value)}></textarea>
+                <textarea id="error_content" className={`text-content ${this.props.errorData.error === 'contentTitle'? "error" : ""}`} onChange={(e) => this.props.onChangeValue('contentTitle', e.target.value)}></textarea>
                 <label htmlFor="callstack" className="label">2) callstack</label>
-                <textarea id="callstack" className="text-content" onChange={(e) => this.props.onChangeValue('contentContent', e.target.value)}></textarea>
+                <textarea id="callstack" className={`text-content ${this.props.errorData.error === 'contentContent'? "error" : ""}`} onChange={(e) => this.props.onChangeValue('contentContent', e.target.value)}></textarea>
               </div>
             </div>
             <div className="col-12 before-container">
               <p className="title">2. 변경 전 코드</p>
+              {
+                this.props.errorData.error === 'beforeDataZero' &&
+                <p className="error-message">{this.props.errorData.message}</p>
+              }
               <div className="before-contents">
                 <button className="button add" onClick={() => this.addInputField()}>추가</button>
+                {
+                  this.props.errorData.error === 'beforeData' &&
+                  <p className="error-message">{this.props.errorData.message}</p>
+                }
                 {this.state.beforeInput}
               </div>
             </div>
@@ -103,12 +115,16 @@ export default class Create extends React.Component {
               <p className="title">3. 해결 방법</p>
               <div className="solution-content">
                 <label htmlFor="solution" className="label"></label>
-                <textarea id="solution" className="text-content" onChange={(e) => this.props.onChangeValue('solution', e.target.value)}></textarea>
+                <textarea id="solution" className={`text-content ${this.props.errorData.error === 'solution'? "error" : ""}`} onChange={(e) => this.props.onChangeValue('solution', e.target.value)}></textarea>
               </div>
             </div>
             <div className="col-12 after-container">
               <p className="title">4. 변경 후 코드</p>
               <div className="after-contents">
+                {
+                  this.props.errorData.error === 'afterData' &&
+                  <p className="error-message">{this.props.errorData.message}</p>
+                }
                 {this.state.afterInput}
               </div>
             </div>
@@ -116,9 +132,7 @@ export default class Create extends React.Component {
               <Link to="/" className="link">
                 <button className="button default">취소하기</button>
               </Link>
-              <Link to={`/post/${this.state.clientPostKey}`} className="link">
-                <button className="button default" onClick={() => this.props.onSaveData(this.state.clientPostKey)}>저장하기</button>
-              </Link>
+              <button className="button default" onClick={() => this.props.onSaveData(this.state.clientPostKey)}>저장하기</button>
             </div>
           </div>
         </div>

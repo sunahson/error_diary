@@ -1,9 +1,12 @@
 import React from 'react';
 import './style.less';
 import { Link } from 'react-router-dom';
-import Search from '../../../public/images/search.svg';
 
 export default class Main extends React.Component {
+  componentWillMount() {
+    this.props.onResetValue();
+  }
+
   render(){
     return (
       <div className="row content">

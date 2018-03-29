@@ -6,8 +6,6 @@ import Create from '../Create/';
 import Post from '../Post/';
 import Update from '../Update/';
 import { Switch, Route } from 'react-router';
-import { formattingDate } from '../../utils.js';
-import 'lodash';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,23 +15,23 @@ export default class App extends React.Component {
       searchText: ''
     }
   }
+
   renderMainPage() {
     let postList = _.pickBy(this.props.postList, (value, key) => {
       return value.title.toLowerCase().includes(this.state.searchText.toLowerCase());
     });
 
-    return <Main postList={postList} onSearchPost={this.onSearchPost.bind(this)} />;
+    return <Main postList={postList} onSearchPost={this.onSearchPost.bind(this)} onResetValue={this.props.onResetValue} />;
   }
 
   renderCreatePostPage() {
     return (
-      <Create onChangeValue={this.props.onChangeValue} onRemoveValue={this.props.onRemoveValue} onSaveData={this.onSaveData.bind(this)} />
+      <Create onChangeValue={this.props.onChangeValue} onRemoveValue={this.props.onRemoveValue} onSaveData={this.onSaveData.bind(this)} errorData={this.props.errorData} onRemoveErrorSign={this.props.onRemoveErrorSign} />
     );
   }
 
   renderPostViewPage() {
-    const clientPostKey = this.props.location.pathname.split("/")[2];
-    const data = _.find(this.props.postList, { 'clientPostKey': clientPostKey });
+    const data = this.props.onSelectPost(this.props.postList);
 
     if (data) {
       return (
@@ -45,12 +43,11 @@ export default class App extends React.Component {
   }
 
   renderPostUpdatePage() {
-    const clientPostKey = this.props.location.pathname.split("/")[2];
-    const data = _.find(this.props.postList, { 'clientPostKey': clientPostKey });
+    const data = this.props.onSelectPost(this.props.postList);
 
     if (data) {
       return (
-        <Update data={data} onChangeValue={this.props.onChangeValue} onRemoveValue={this.props.onRemoveValue} onUpdateData={this.onUpdateData.bind(this)} />
+        <Update data={data} onChangeValue={this.props.onChangeValue} onRemoveValue={this.props.onRemoveValue} onUpdateData={this.onUpdateData.bind(this)} errorData={this.props.errorData} onRemoveErrorSign={this.props.onRemoveErrorSign} />
       );
     } else {
       return null;
@@ -58,87 +55,113 @@ export default class App extends React.Component {
   }
 
   onSaveData(clientPostKey) {
-    let dateResult = formattingDate(new Date());
-    const postData = this.props.postData
+    const validateData = this.validateData(this.props.postData);
 
-    this.props.firebase.push('postList', {
-      clientPostKey: clientPostKey,
-      DBPostKey: '',
-      title: postData.title,
-      content: postData.content,
-      beforeData: postData.beforeData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
-      afterData: postData.afterData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
-      solution: postData.solution,
-      date: dateResult
-    });
+    if (validateData) {
+      return;
+    }
 
-    this.props.firebase.update(`postList/${this.props.postList && Object.keys(this.props.postList)[Object.keys(this.props.postList).length - 1]}`, {
-      DBPostKey: this.props.postList && Object.keys(this.props.postList)[Object.keys(this.props.postList).length - 1]
-    });
-
+    this.props.onSaveData(this.props.postData, this.props.postList, clientPostKey);
+    this.props.history.push(`post/${clientPostKey}`);
     this.props.onResetValue();
   }
 
   onUpdateData() {
-    const clientPostKey = this.props.location.pathname.split("/")[2];
-    const data = _.find(this.props.postList, { 'clientPostKey': clientPostKey });
-    const DBPostKey = data.DBPostKey;
-    const lastKey = Object.keys(this.props.postList)[Object.keys(this.props.postList).length - 1];
-    const postData = this.props.postData;
+    const validateData = this.validateData(this.props.postData);
 
-    if (postData.content.length !== 0) {
-      for (let i = 0; i < 2; i++) {
-        if (!(postData.content[i])) {
-          postData.content[i] = data.content[i];
-        }
-      }
-    } else {
-      postData.content = data.content
+    if (validateData) {
+      return;
     }
 
-    if (postData.beforeData.length !== 0) {
-      for (let i = 0; i < data.beforeData.length; i++) {
-        for (let j = 0; j < 2; j++) {
-          if (postData.beforeData[i] === undefined) {
-            postData.beforeData[i] = new Array();
-            postData.beforeData[i][j] = data.beforeData[i][j];
-          } else if ((postData.beforeData[i][j]) !== '' && !(postData.beforeData[i][j])) {
-            postData.beforeData[i][j] = data.beforeData[i][j];
-          }
-
-          if (postData.afterData[i] === undefined) {
-            postData.afterData[i] = new Array();
-            postData.afterData[i][j] = data.afterData[i][j];
-          } else if ((postData.beforeData[i][j]) !== '' && !(postData.afterData[i][j])) {
-            postData.afterData[i][j] = data.afterData[i][j];
-          }
-        }
-      }
-    } else {
-      postData.beforeData = data.beforeData;
-      postData.afterData = data.afterData;
-    }
-
-    const updateDataStorage = {
-      title: postData.title? postData.title : data.title,
-      content: postData.content,
-      beforeData: postData.beforeData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
-      afterData: postData.afterData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
-      solution: postData.solution? postData.solution : data.solution,
-    };
-
-    this.props.firebase.update(`postList/${DBPostKey === ''? lastKey : DBPostKey}`, updateDataStorage);
-
+    this.props.onUpdateData(this.props.postData, this.props.postList);
+    this.props.history.goBack();
     this.props.onResetValue();
   }
 
-  onRemoveData() {
-    const clientPostKey = this.props.location.pathname.split("/")[2];
-    const data = _.find(this.props.postList, { 'clientPostKey': clientPostKey });
-    const DBPostKey = data.DBPostKey;
-    const lastKey = Object.keys(this.props.postList)[Object.keys(this.props.postList).length - 1];
+  validateData(postData) {
+    let error = '';
 
-    this.props.firebase.remove(`postList/${DBPostKey === ''? lastKey : DBPostKey}`);
+    if (!postData.title) {
+      this.props.onShowErrorSign('title');
+      error = 'title';
+
+      return error;
+    } else if (!postData.content[0]) {
+      this.props.onShowErrorSign('contentTitle');
+      error = 'contentTitle';
+
+      return error;
+    } else if (!postData.content[1]) {
+      this.props.onShowErrorSign('contentContent');
+      error = 'contentContent';
+
+      return error;
+    }
+
+    if (postData.beforeData.length === 0) {
+      this.props.onShowErrorSign('beforeDataZero');
+      error = 'beforeDataZero';
+
+      return error;
+    } else if (postData.beforeData.length !== 0) {
+      let beforeDataFileNameCount = 0;
+      let beforeDataContentCount = 0;
+
+      postData.beforeData.map((data, index) => {
+        if (data[0]) {
+          beforeDataFileNameCount++;
+        }
+
+        if (data[1]) {
+          beforeDataContentCount++;
+        }
+      });
+
+      if (beforeDataFileNameCount === 0 || beforeDataContentCount === 0) {
+        this.props.onShowErrorSign('beforeData');
+        error = 'beforeData';
+
+        return error;
+      }
+    }
+
+    if (!postData.solution) {
+      this.props.onShowErrorSign('solution');
+      error = 'solution';
+
+      return error;
+    }
+
+    if (postData.afterData.length === 0) {
+      this.props.onShowErrorSign('afterData');
+      error = 'afterData';
+
+      return error;
+    } else if (postData.afterData.length !== 0) {
+      let afterDataFileNameCount = 0;
+      let afterDataContentCount = 0;
+
+      postData.afterData.map((data, index) => {
+        if (data[0]) {
+          afterDataFileNameCount++;
+        }
+
+        if (data[1]) {
+          afterDataContentCount++;
+        }
+      });
+
+      if (afterDataFileNameCount === 0 || afterDataContentCount === 0) {
+        this.props.onShowErrorSign('afterData');
+        error = 'afterData';
+
+        return error;
+      }
+    }
+  }
+
+  onRemoveData() {
+    this.props.onRemoveData(this.props.postList);
   }
 
   onSearchPost(searchText) {
