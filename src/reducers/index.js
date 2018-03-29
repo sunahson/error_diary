@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { CHANGE_VALUE, REMOVE_VALUE, RESET_VALUE } from '../constants/ActionTypes';
+import { CHANGE_VALUE, REMOVE_VALUE, RESET_VALUE, SEARCH } from '../constants/ActionTypes';
 
 const initialState = {
   postData: {

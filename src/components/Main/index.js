@@ -1,12 +1,19 @@
 import React from 'react';
 import './style.less';
 import { Link } from 'react-router-dom';
+import Search from '../../../public/images/search.svg';
 
 export default class Main extends React.Component {
   render(){
     return (
       <div className="row content">
         <div className="offset-2 col-8">
+          <div className="searching">
+            <div className="searching-box">
+              <label htmlFor="search">검색</label>
+              <input type="text" id="search" className="search" placeholder="검색어를 입력하세요." onChange={(e) => this.props.onSearchPost(e.target.value)} />
+            </div>
+          </div>
           <ul className="postList">
             <li className="row postList-header">
               <p className="col-8 postList-title">제목</p>
@@ -35,9 +42,6 @@ export default class Main extends React.Component {
           <Link to="/create" className="link">
             <button className="button default">글쓰기</button>
           </Link>
-          <p className="footer-page">
-            <span>1 | 2 | 3 | 4 | 5 | ... | 15</span>
-          </p>
         </div>
       </div>
     );

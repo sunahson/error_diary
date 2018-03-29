@@ -10,8 +10,19 @@ import { formattingDate } from '../../utils.js';
 import 'lodash';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchText: ''
+    }
+  }
   renderMainPage() {
-    return <Main postList={this.props.postList} />;
+    let postList = _.pickBy(this.props.postList, (value, key) => {
+      return value.title.toLowerCase().includes(this.state.searchText.toLowerCase());
+    });
+
+    return <Main postList={postList} onSearchPost={this.onSearchPost.bind(this)} />;
   }
 
   renderCreatePostPage() {
@@ -55,8 +66,8 @@ export default class App extends React.Component {
       DBPostKey: '',
       title: postData.title,
       content: postData.content,
-      beforeData: postData.beforeData.filter((n) => { return (n[0] !== '' && n[1] !== '' ) }),
-      afterData: postData.afterData.filter((n) => { return (n[0] !== '' && n[1] !== '' ) }),
+      beforeData: postData.beforeData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
+      afterData: postData.afterData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
       solution: postData.solution,
       date: dateResult
     });
@@ -94,15 +105,7 @@ export default class App extends React.Component {
           } else if ((postData.beforeData[i][j]) !== '' && !(postData.beforeData[i][j])) {
             postData.beforeData[i][j] = data.beforeData[i][j];
           }
-        }
-      }
-    } else {
-      postData.beforeData = data.beforeData;
-    }
 
-    if (postData.afterData.length !== 0) {
-      for (let i = 0; i < data.afterData.length; i++) {
-        for (let j = 0; j < 2; j++) {
           if (postData.afterData[i] === undefined) {
             postData.afterData[i] = new Array();
             postData.afterData[i][j] = data.afterData[i][j];
@@ -112,14 +115,15 @@ export default class App extends React.Component {
         }
       }
     } else {
+      postData.beforeData = data.beforeData;
       postData.afterData = data.afterData;
     }
 
     const updateDataStorage = {
       title: postData.title? postData.title : data.title,
       content: postData.content,
-      beforeData: postData.beforeData.filter((n) => { return (n[0] !== '' && n[1] !== '' ) }),
-      afterData: postData.afterData.filter((n) => { return (n[0] !== '' && n[1] !== '' ) }),
+      beforeData: postData.beforeData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
+      afterData: postData.afterData.filter((data) => { return (data[0] !== '' && data[1] !== '' ) }),
       solution: postData.solution? postData.solution : data.solution,
     };
 
@@ -135,6 +139,12 @@ export default class App extends React.Component {
     const lastKey = Object.keys(this.props.postList)[Object.keys(this.props.postList).length - 1];
 
     this.props.firebase.remove(`postList/${DBPostKey === ''? lastKey : DBPostKey}`);
+  }
+
+  onSearchPost(searchText) {
+    this.setState({
+      searchText
+    });
   }
 
   render(){
