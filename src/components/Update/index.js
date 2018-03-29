@@ -1,18 +1,53 @@
 import React from 'react';
 import './style.less';
 import { Link } from 'react-router-dom';
-import cryptoRandomString from 'crypto-random-string';
 
 export default class Create extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      clientPostKey: cryptoRandomString(20),
       inputFieldCount: 0,
       beforeInput: [],
       afterInput: []
     };
+  }
+
+  componentWillMount() {
+    let newBeforeInput = [];
+    let newAfterInput = [];
+
+    this.props.data.beforeData.map((data, index) => {
+      newBeforeInput.push (
+        <div key={index} className="before-content">
+          <label htmlFor="file_name" className="label"></label>
+          <input type="text" id="file_name" className="input" defaultValue={data[0]} onChange={(e) => this.props.onChangeValue('beforeDataFileName', e.target.value, index)} />
+          <label htmlFor="file_content" className="label"></label>
+          <textarea id="file_content" className="text-content" defaultValue={data[1]} onChange={(e) => this.props.onChangeValue('beforeDataContent', e.target.value, index)}></textarea>
+          <button className="button remove" onClick={() => {
+            this.removeInputField(index);
+            this.props.onRemoveValue(index);
+          }}>삭제</button>
+        </div>
+      );
+    });
+
+    this.props.data.afterData.map((data, index) => {
+      newAfterInput.push (
+        <div key={index} className="after-content">
+          <label htmlFor="file_name" className="label"></label>
+          <input type="text" id="file_name" className="input" defaultValue={data[0]} onChange={(e) => this.props.onChangeValue('afterDataFileName', e.target.value, index)} />
+          <label htmlFor="file_content" className="label"></label>
+          <textarea id="file_content" className="text-content" defaultValue={data[1]} onChange={(e) => this.props.onChangeValue('afterDataContent', e.target.value, index)}></textarea>
+        </div>
+      );
+    });
+
+    this.setState({
+      inputFieldCount: newBeforeInput.length,
+      beforeInput: newBeforeInput,
+      afterInput: newAfterInput
+    });
   }
 
   addInputField() {
@@ -79,7 +114,7 @@ export default class Create extends React.Component {
               <label htmlFor="title" className="label">제목</label>
             </div>
             <div className="col-10 title-input-container">
-              <input type="text" id="title" className="input" onChange={(e) => this.props.onChangeValue('title', e.target.value)} />
+              <input type="text" id="title" className="input" defaultValue={this.props.data.title} onChange={(e) => this.props.onChangeValue('title', e.target.value)} />
             </div>
           </div>
           <div className="row">
@@ -87,9 +122,9 @@ export default class Create extends React.Component {
               <p className="title">1. 발생한 에러</p>
               <div className="error-content">
                 <label htmlFor="error_content" className="label">1) 에러 내용</label>
-                <textarea id="error_content" className="text-content" onChange={(e) => this.props.onChangeValue('contentTitle', e.target.value)}></textarea>
+                <textarea id="error_content" className="text-content" defaultValue={this.props.data.content[0]} onChange={(e) => this.props.onChangeValue('contentTitle', e.target.value)}></textarea>
                 <label htmlFor="callstack" className="label">2) callstack</label>
-                <textarea id="callstack" className="text-content" onChange={(e) => this.props.onChangeValue('contentContent', e.target.value)}></textarea>
+                <textarea id="callstack" className="text-content" defaultValue={this.props.data.content[1]} onChange={(e) => this.props.onChangeValue('contentContent', e.target.value)}></textarea>
               </div>
             </div>
             <div className="col-12 before-container">
@@ -103,7 +138,7 @@ export default class Create extends React.Component {
               <p className="title">3. 해결 방법</p>
               <div className="solution-content">
                 <label htmlFor="solution" className="label"></label>
-                <textarea id="solution" className="text-content" onChange={(e) => this.props.onChangeValue('solution', e.target.value)}></textarea>
+                <textarea id="solution" className="text-content" defaultValue={this.props.data.solution} onChange={(e) => this.props.onChangeValue('solution', e.target.value)}></textarea>
               </div>
             </div>
             <div className="col-12 after-container">
@@ -116,8 +151,8 @@ export default class Create extends React.Component {
               <Link to="/" className="link">
                 <button className="button default">취소하기</button>
               </Link>
-              <Link to={`/post/${this.state.clientPostKey}`} className="link">
-                <button className="button default" onClick={() => this.props.onSaveData(this.state.clientPostKey)}>저장하기</button>
+              <Link to={`/post/${this.props.data.clientPostKey}`} className="link">
+                <button className="button default" onClick={() => this.props.onUpdateData()}>수정하기</button>
               </Link>
             </div>
           </div>

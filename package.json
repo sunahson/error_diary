@@ -10,6 +10,7 @@
   "author": "Dasol Seo",
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "crypto-random-string": "^1.0.0",
     "firebase": "^4.11.0",
     "highlight.js": "^9.12.0",
     "lodash": "^4.17.5",
@@ -27,6 +28,8 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.11",

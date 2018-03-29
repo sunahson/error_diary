@@ -27,7 +27,7 @@ export default class Post extends React.Component {
                 <p className="sub-title">1) 에러 내용</p>
                 <div className="sub-content">
                   {
-                    this.props.data && this.props.data.content[0].split('\n').map((data, index) => {
+                    this.props.data.content[0] && this.props.data.content[0].split('\n').map((data, index) => {
                       return (
                         <p key={index}>{data}</p>
                       );
@@ -39,7 +39,7 @@ export default class Post extends React.Component {
                 <p className="sub-title">2) callstack</p>
                 <div className="sub-content">
                   {
-                    this.props.data && this.props.data.content[1].split('\n').map((data, index) => {
+                    this.props.data.content[1] && this.props.data.content[1].split('\n').map((data, index) => {
                       return (
                         <p key={index}>{data}</p>
                       );
@@ -53,29 +53,28 @@ export default class Post extends React.Component {
             <p className="before-title">2. 변경 전 코드</p>
             <div className="before-contents">
               {
-                this.props.data && this.props.data.beforeData.map((data, index) => {
+                this.props.data.beforeData && this.props.data.beforeData.map((data, index) => {
                   const dataSplit = data[0].split('.');
                   const lang = dataSplit[dataSplit.length - 1];
-
-                  if (lang === 'js') {
-                    return (
-                      <div key={index} className="before-content">
-                        <p className="sub-title">{data[0]}</p>
-                        <Highlight className='javascript'>
-                          <p className="sub-content">{data[1]}</p>
-                        </Highlight>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div key={index} className="before-content">
-                        <p className="sub-title">{data[0]}</p>
-                        <Highlight className={lang}>
-                          <p className="sub-content">{data[1]}</p>
-                        </Highlight>
-                      </div>
-                    );
-                  }
+                    if (lang === 'js') {
+                      return (
+                        <div key={index} className="before-content">
+                          <p className="sub-title">{data[0]}</p>
+                          <Highlight className='javascript'>
+                            <p className="sub-content">{data[1]}</p>
+                          </Highlight>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div key={index} className="before-content">
+                          <p className="sub-title">{data[0]}</p>
+                          <Highlight className={lang}>
+                            <p className="sub-content">{data[1]}</p>
+                          </Highlight>
+                        </div>
+                      );
+                    }
                 })
               }
             </div>
@@ -84,7 +83,7 @@ export default class Post extends React.Component {
             <p className="solution-title">3. 해결 방법</p>
             <div className="solution-content">
               {
-                this.props.data && this.props.data.solution.split('\n').map((data, index) => {
+                this.props.data.solution && this.props.data.solution.split('\n').map((data, index) => {
                   return (
                     <p key={index}>{data}</p>
                   );
@@ -96,7 +95,7 @@ export default class Post extends React.Component {
             <p className="after-title">4. 변경 후 코드</p>
             <div className="after-contents">
               {
-                this.props.data && this.props.data.afterData.map((data, index) => {
+                this.props.data.afterData && this.props.data.afterData.map((data, index) => {
                   const dataSplit = data[0].split('.');
                   const lang = dataSplit[dataSplit.length - 1];
 
@@ -124,12 +123,16 @@ export default class Post extends React.Component {
             </div>
           </div>
           <div className="button-container">
-            <button className="button default">삭제하기</button>
+            <Link to="/" className="link">
+              <button className="button default" onClick={() => this.props.onRemoveData()}>삭제하기</button>
+            </Link>
             <div className="button-sub-container">
               <Link to="/" className="link">
                 <button className="button default">목록보기</button>
               </Link>
-              <button className="button default">수정하기</button>
+              <Link to={`/update/${this.props.data && this.props.data.clientPostKey}`} className="link">
+                <button className="button default">수정하기</button>
+              </Link>
             </div>
           </div>
         </div>

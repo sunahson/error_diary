@@ -19,7 +19,7 @@ export default class Main extends React.Component {
                   return (
                     <div className="row post" key={index}>
                       <p className="col-8 post-title">
-                        <Link to={`/post/${this.props.postList[data].key}`} className="link">
+                        <Link to={`/post/${this.props.postList[data].clientPostKey}`} className="link">
                           {this.props.postList[data].title}
                         </Link>
                       </p>
