@@ -105,7 +105,7 @@ export default class Create extends React.Component {
               <div className="before-contents">
                 <button className="button add" onClick={() => this.addInputField()}>추가</button>
                 {
-                  this.props.errorData.error === 'beforeData' &&
+                  this.props.errorData.error === 'beforeAfterData' &&
                   <p className="error-message">{this.props.errorData.message}</p>
                 }
                 {this.state.beforeInput}

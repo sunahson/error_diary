@@ -104,8 +104,8 @@ export default class App extends React.Component {
 
       return error;
     } else if (postData.beforeData.length !== 0) {
-      let beforeDataFileNameCount = 0;
-      let beforeDataContentCount = 0;
+      var beforeDataFileNameCount = 0;
+      var beforeDataContentCount = 0;
 
       postData.beforeData.map((data, index) => {
         if (data[0]) {
@@ -117,9 +117,9 @@ export default class App extends React.Component {
         }
       });
 
-      if (beforeDataFileNameCount === 0 || beforeDataContentCount === 0) {
-        this.props.onShowErrorSign('beforeData');
-        error = 'beforeData';
+      if ((beforeDataFileNameCount === 0 || beforeDataContentCount === 0) || (beforeDataFileNameCount !== beforeDataContentCount)) {
+        this.props.onShowErrorSign('beforeAfterData');
+        error = 'beforeAfterData';
 
         return error;
       }
@@ -133,8 +133,8 @@ export default class App extends React.Component {
     }
 
     if (postData.afterData.length === 0) {
-      this.props.onShowErrorSign('afterData');
-      error = 'afterData';
+      this.props.onShowErrorSign('beforeAfterData');
+      error = 'beforeAfterData';
 
       return error;
     } else if (postData.afterData.length !== 0) {
@@ -151,9 +151,14 @@ export default class App extends React.Component {
         }
       });
 
-      if (afterDataFileNameCount === 0 || afterDataContentCount === 0) {
-        this.props.onShowErrorSign('afterData');
-        error = 'afterData';
+      if ((afterDataFileNameCount === 0 || afterDataContentCount === 0) || (afterDataFileNameCount !== afterDataContentCount)) {
+        this.props.onShowErrorSign('beforeAfterData');
+        error = 'beforeAfterData';
+
+        return error;
+      } else if ((beforeDataFileNameCount !== afterDataFileNameCount) || (beforeDataContentCount !== afterDataContentCount)) {
+        this.props.onShowErrorSign('beforeAfterData');
+        error = 'beforeAfterData';
 
         return error;
       }

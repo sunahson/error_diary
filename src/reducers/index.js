@@ -104,22 +104,17 @@ const errorData = (state = initialState.errorData, action) => {
     } else if (action.payload === 'beforeDataZero') {
       return Object.assign({}, state, {
         error: 'beforeDataZero',
-        message: '추가 버튼을 눌러 코드를 작성하세요.'
+        message: '추가 버튼을 눌러 파일 이름과 코드를 작성하세요.'
       });
-    } else if (action.payload === 'beforeData') {
+    } else if (action.payload === 'beforeAfterData') {
       return Object.assign({}, state, {
-        error: 'beforeData',
-        message: '코드를 입력해주세요.'
+        error: 'beforeAfterData',
+        message: '파일 이름과 코드를 모두 작성했는지 확인해주세요.'
       });
     } else if (action.payload === 'solution') {
       return Object.assign({}, state, {
         error: 'solution',
         message: ''
-      });
-    } else if (action.payload === 'afterData') {
-      return Object.assign({}, state, {
-        error: 'afterData',
-        message: '코드를 입력해주세요.'
       });
     }
     case REMOVE_ERROR:
