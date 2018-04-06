@@ -11,7 +11,7 @@ export default class Post extends React.Component {
         <div className="col-12 post">
           <h3 className="title">
             {
-              this.props.data && this.props.data.title.split('\n').map((data, index) => {
+              this.props.data.title && this.props.data.title.split('\n').map((data, index) => {
                 return (
                   <p key={index}>{data}</p>
                 );
@@ -19,7 +19,7 @@ export default class Post extends React.Component {
             }
           </h3>
           <hr className="hr" />
-          <p className="date">{this.props.data && this.props.data.date}</p>
+          <p className="date">{this.props.data.date && this.props.data.date}</p>
           <div className="error-container">
             <p className="error-title">1. 발생한 에러</p>
             <div className="error-content">
@@ -130,7 +130,7 @@ export default class Post extends React.Component {
               <Link to="/" className="link">
                 <button className="button default">목록보기</button>
               </Link>
-              <Link to={`/update/${this.props.data && this.props.data.clientPostKey}`} className="link">
+              <Link to={`/update/${this.props.data.clientPostKey && this.props.data.clientPostKey}`} className="link">
                 <button className="button default">수정하기</button>
               </Link>
             </div>
